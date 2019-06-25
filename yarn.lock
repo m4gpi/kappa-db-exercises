@@ -259,6 +259,11 @@ errno@~0.1.1:
   dependencies:
     prr "~1.0.1"
 
+events@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/events/-/events-3.0.0.tgz#9a0a0dfaf62893d92b875b8f2698ca4114973e88"
+  integrity sha512-Dc381HFWJzEOhQ+d8pkNon++bk9h6cdAoAj4iE6Q4y6xgTzySWXlKn05/TVNpjnfRqi/X0EpJEJohPjNI3zpVA==
+
 fast-bitfield@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/fast-bitfield/-/fast-bitfield-1.2.2.tgz#7f08cdb46a6384b887a64127b56aa4d59bc8fa25"
@@ -615,7 +620,7 @@ multifeed-index@^3.2.2:
   dependencies:
     inherits "^2.0.3"
 
-multifeed@^3.0.6:
+multifeed@^3.0.6, multifeed@^3.0.8:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/multifeed/-/multifeed-3.0.8.tgz#31c623cbb79d0b72fd4d9dec01c8cd907ba82e74"
   integrity sha512-OsNz8PFD3YUiPycZo093a/FnO88lc5xoFUgtie3loyfsR85cn6Ui4rvYTiJWpfhJk4AruditvoyX0Rx6Z513SQ==

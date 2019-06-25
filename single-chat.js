@@ -1,7 +1,6 @@
 var Discovery = require('discovery-swarm')
 var hypercore = require('hypercore')
 var pump = require('pump')
-var thunky = require('thunky')
 
 var feed = hypercore('./single-chat', { valueEncoding: 'json' })
 var swarm = Discovery()
