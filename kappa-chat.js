@@ -1,19 +1,27 @@
+const Discovery = require('discovery-swarm')
 const kappa = require('kappa-core')
 const View = require('kappa-view-list')
 const memdb = require('memdb')
 const level = require('level')
+const pump = require('pump')
+
 // const sublevel = require('subleveldown')
-const path = require('path')
+// const path = require('path')
+// const db = level(path.join('kappa-chat', 'views'))
 
-const db = level(path.join('kappa-chat', 'views'))
+const APP_PATH = `./kappa-chat-${process.argv[2]}`
+const DISCOVERY_KEY = 'kappa-chat'
 
-// const db = memdb()
+const swarm = Discovery()
+const db = memdb()
+const core = kappa(APP_PATH, { valueEncoding: 'json' })
 
-const core = kappa('./kappa-chat', { valueEncoding: 'json' })
 const view = View(db, (msg, next) => {
   if (msg.value.timestamp && typeof msg.value.timestamp === 'number') next(null, [msg.value.timestamp])
   else next()
 })
+
+swarm.join(DISCOVERY_KEY)
 
 core.use('timestamp', view)
 
@@ -40,6 +48,11 @@ core.ready(function () {
         })
       })
     }
+  })
+
+  swarm.on('connection', (connection, info) => {
+    console.log('new peer connected', info)
+    pump(connection, core.replicate({ live: true  }), connection)
   })
 })
 
