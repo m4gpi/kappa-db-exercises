@@ -5,14 +5,15 @@ const memdb = require('memdb')
 const level = require('level')
 const pump = require('pump')
 const path = require('path')
-const sublevel = require('subleveldown')
+const mkdirp = require('mkdirp')
 
 const APP_PATH = `./kappa-chat-${process.argv[2]}`
 const DISCOVERY_KEY = 'kappa-chat'
+const TIMESTAMPS = 't'
 
 const swarm = Discovery()
-const db = sublevel(level(path.join(APP_PATH, 'views')), 't', { valueEncoding: 'json' })
-// const db = memdb()
+mkdirp.sync(`${APP_PATH}/views`)
+const db = level(path.join(APP_PATH, 'views'))
 
 const core = kappa(APP_PATH, { valueEncoding: 'json' })
 
