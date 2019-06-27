@@ -20,6 +20,7 @@
     "pull-stream": "^3.6.12",
     "pump": "^3.0.0",
     "stream": "^0.0.2",
+    "stream-to-pull-stream": "^1.7.3",
     "thunky": "^1.0.3",
     "txt-blit": "^1.0.2"
   }

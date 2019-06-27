@@ -9,6 +9,7 @@ const mkdirp = require('mkdirp')
 const pull = require('pull-stream')
 const MFR = require('map-filter-reduce')
 const stream = require('stream')
+const toPull = require('stream-to-pull-stream')
 
 const APP_PATH = `./kappa-chat-${process.argv[2]}`
 const DISCOVERY_KEY = 'kappa-chat'
@@ -74,11 +75,18 @@ core.ready(function () {
   //   })
   // )
 
-  db.createReadStream({ live: true }).on('data', (chunk) => {
-    if (chunk.key === 'state') {
-      console.log(Buffer.from(chunk.value).toString('utf8'))
-    }
-  })
+  pull(
+    toPull(core.api.timestamp.read({ live: true })),
+    MFR([
+      { $filter: { value: { timestamp: 1561560076601 } } }
+    ]),
+    pull.drain(console.log)
+  )
+  // db.createReadStream({ live: true }).on('data', (chunk) => {
+  //   if (chunk.key === 'state') {
+  //     console.log(Buffer.from(chunk.value).toString('utf8'))
+  //   }
+  // })
 
   // core.feed('local', (err, feed) => {
   //   prompt('Send a message: \n', process.exit)
