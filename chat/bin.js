@@ -4,6 +4,7 @@ const yargs = require('yargs')
 const Discovery = require('discovery-swarm')
 const path = require('path')
 const mkdirp = require('mkdirp')
+const pump = require('pump')
 
 const APP_PATH = `./db`
 const DISCOVERY_KEY = 'db'
@@ -23,6 +24,14 @@ core.ready(() => CLI(core))
 
 function CLI (core) {
   return yargs
+    .command('swarm', 'Replicate messages with peers using the same discovery key', (argv) => {
+      const swarm = Discovery()
+      swarm.join(DISCOVERY_KEY)
+      swarm.on('connection', (connection, peer) => {
+        console.log(`Connected to ${peer.id.toString('hex')}`)
+        pump(connection, core.replicate({ live: true  }), connection)
+      })
+    })
     .command('publish', 'Append a message to your feed | --type must be provided', (yargs) => {
       yargs
         .positional('type', {
@@ -70,4 +79,3 @@ function CLI (core) {
     else console.log(res)
   }
 }
-
